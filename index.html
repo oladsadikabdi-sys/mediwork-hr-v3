@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediWork HR V3 — Hospital Workforce Management Platform</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>MediWork HR V3 — Workforce Management Platform</h1>
+      <span class="subtext">Multi-Role Hospital Operations & Roster Testing Environment</span>
+    </div>
+
+    <div class="role-switcher">
+      <label for="activeRole">Active Context:</label>
+      <select id="activeRole" onchange="switchRoleContext()">
+        <option value="super_admin">1. Super Admin</option>
+        <option value="hospital_admin">2. Hospital Admin</option>
+        <option value="hr_manager">3. HR Manager</option>
+        <option value="dept_head">4. Department Head (Radiology)</option>
+        <option value="employee" selected>5. Staff Member (Radiology Tech)</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="grid">
+    <!-- COLUMN 1: ADMINISTRATIVE & HR CONTROL -->
+    <section>
+      <!-- SYSTEM & HOSPITAL CONFIGURATION -->
+      <div class="card" id="card-facility">
+        <h2>Hospital & Facility Settings <span class="lock-notice" id="lock-facility"></span></h2>
+        <form id="facilityForm">
+          <input type="text" id="hospitalName" placeholder="Hospital/Facility Name" required value="Karamara General Hospital">
+          <select id="facilityStatus">
+            <option value="Active">System Status: Active</option>
+            <option value="Maintenance">System Status: Maintenance Mode</option>
+          </select>
+          <button type="submit" id="btn-facility">Save Facility Configuration</button>
+        </form>
+      </div>
+
+      <!-- STAFF DIRECTORY & COMPLIANCE -->
+      <div class="card" id="card-staff">
+        <h2>Staff Directory & License Tracker <span class="lock-notice" id="lock-staff"></span></h2>
+        <form id="staffForm">
+          <input type="text" id="staffName" placeholder="Full Name (e.g., Dr. Samira)" required>
+          <select id="staffDept" required>
+            <option value="Radiology">Radiology</option>
+            <option value="Emergency">Emergency</option>
+            <option value="Nursing">Nursing</option>
+          </select>
+          <select id="staffRole" required>
+            <option value="Employee">Role: Employee</option>
+            <option value="Department Head">Role: Department Head</option>
+          </select>
+          <label class="field-label">License Expiration Date:</label>
+          <input type="date" id="licenseExpiry" required>
+          <button type="submit" id="btn-staff">Register Staff Member</button>
+        </form>
+
+        <table id="staffTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Dept</th>
+              <th>Role</th>
+              <th>License Status</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- LEAVE APPROVAL WORKFLOW -->
+      <div class="card" id="card-leave-approval">
+        <h2>Leave Requests & Approvals <span class="lock-notice" id="lock-leave-approval"></span></h2>
+        <table id="leaveApprovalTable">
+          <thead>
+            <tr>
+              <th>Staff Member</th>
+              <th>Date</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- COLUMN 2: DEPT HEAD & EMPLOYEE OPERATIONS -->
+    <section>
+      <!-- SHIFT ROSTER BUILDER -->
+      <div class="card" id="card-roster">
+        <h2>Shift Roster Builder <span class="lock-notice" id="lock-roster"></span></h2>
+        <form id="rosterForm">
+          <select id="rosterStaff" required><option value="">Select Department Staff</option></select>
+          <select id="shiftType" required>
+            <option value="Morning (08:00 - 16:00)">Morning (08:00 - 16:00)</option>
+            <option value="Night (20:00 - 08:00)">Night (20:00 - 08:00)</option>
+            <option value="On-Call">On-Call Duty</option>
+          </select>
+          <input type="date" id="shiftDate" required>
+          <button type="submit" id="btn-roster">Publish Shift Assignment</button>
+        </form>
+
+        <table id="rosterTable">
+          <thead>
+            <tr>
+              <th>Staff Member</th>
+              <th>Shift Details</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- EMPLOYEE SELF-SERVICE PORTAL -->
+      <div class="card" id="card-employee-portal">
+        <h2>Employee Self-Service Portal <span class="lock-notice" id="lock-employee-portal"></span></h2>
+        
+        <p class="section-label">1. Attendance Clock-In:</p>
+        <div class="button-group">
+          <button type="button" class="btn-success" id="btn-clock-in" onclick="clockIn('Present')">Clock In (On-Time)</button>
+          <button type="button" class="btn-warning" id="btn-clock-late" onclick="clockIn('Late (15m)')">Clock In (Late)</button>
+        </div>
+
+        <p class="section-label">2. Submit Leave Application:</p>
+        <form id="leaveRequestForm">
+          <input type="date" id="leaveDate" required>
+          <input type="text" id="leaveReason" placeholder="Reason (e.g., Annual Leave, Personal)" required>
+          <button type="submit" id="btn-submit-leave">Submit Leave Request</button>
+        </form>
+      </div>
+
+      <!-- AUDIT LOG & EVENTS -->
+      <div class="card">
+        <h2>RBAC & System Audit Log</h2>
+        <div class="log-box" id="auditLog">> System online. Initializing RBAC parameters...</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
